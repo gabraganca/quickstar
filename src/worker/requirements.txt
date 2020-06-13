@@ -1,0 +1,6 @@
+celery~=4.4.0
+redis~=3.5.0
+# Testing
+pytest~=5.4
+pytest-mock~=3.1.0
+requests==2.23

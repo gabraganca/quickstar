@@ -1,0 +1,13 @@
+This directory contains:
+
+1) new version of the spectrum synthesis program, SYNSPEC, version 49,
+which is able to work with molecular lines.
+
+- synspec49.f  -- the source code
+- *.FOR        -- the "include" files
+
+Finally, there are three files neede to run Synspec with molecules,
+
+- tsuji.atoms  -- data for atoms for molecular state equation
+- tsuji.molec  -- data for molecules for molecular state equation
+- irwin.dat    -- data for atomic partition functions after Irwin

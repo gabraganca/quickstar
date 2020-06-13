@@ -1,0 +1,64 @@
+version: "3.8"
+
+x-common-variables: &common-variables
+  CELERY_BROKER_URL: amqp://user:bitnami@rabbitmq:5672//
+  CELERY_BACKEND_URL: redis://:password123@redis:6379/0
+
+services:
+  api:
+    build:
+      context: ./src/api
+      dockerfile: api.dockerfile
+    restart: always
+    ports:
+      - "8000:8000"
+    environment: *common-variables
+    entrypoint: ["uvicorn", "app.main:app", "--host", "0.0.0.0"]
+    healthcheck:
+        test: curl --fail -s 0.0.0.0:8000/health || exit 1
+        interval: 30s
+        timeout: 30s
+        retries: 3
+
+  worker:
+    build:
+      context: ./src/worker
+      dockerfile: worker.dockerfile
+    environment: *common-variables
+    entrypoint: ["celery", "worker", "-A", "app", "-Q", "synspec-queue", "-c", "1", "-l", "info"]
+    volumes:
+      - ./atdata:/home/worker/app/atdata
+      - ./bstar2006:/home/worker/app/bstar2006
+
+  rabbitmq:
+    image: "bitnami/rabbitmq:3.8"
+    ports:
+      - "4369:4369"
+      - "5672:5672"
+      - "25672:25672"
+      - "15672:15672"
+    volumes:
+      - "rabbitmq_data:/bitnami"
+
+  redis:
+    image: "bitnami/redis:6.0"
+    environment:
+      - REDIS_PASSWORD=password123
+    ports:
+      - "6379:6379"
+    volumes:
+      - "redis_data:/bitnami/redis/data"
+
+  flower:
+    image: mher/flower
+    environment:
+      <<: *common-variables
+      FLOWER_BROKER_API: 'http://user:bitnami@rabbitmq:15672/api/'
+      FLOWER_BASIC_AUTH: 'user:test'
+    ports:
+      - "5555:5555"
+volumes:
+  rabbitmq_data:
+    driver: local
+  redis_data:
+    driver: local
