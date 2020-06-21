@@ -1,0 +1,71 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  docker-build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      name: Check out code
+
+    - name: Build API image
+      run: docker build src/api --file src/api/api.dockerfile --rm
+
+    - name: Build Synspec Worker image
+      run: docker build src/worker --file src/worker/worker.dockerfile --rm
+
+
+  test-worker:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      name: Check out code
+
+    - name: Build Synspec Worker image
+      run: docker build src/worker --file src/worker/worker.dockerfile --rm -t quickstar_worker
+
+    - names: Run tests
+      run: docker run quickstar_worker pytest -v
+
+  test-api:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      name: Check out code
+
+    - name: Build API image
+      run: docker build src/api --file src/api/api.dockerfile --rm -t quickstar_api
+
+    - names: Run tests
+      run: docker run quickstar_api pytest -v
+
+  check-format:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      name: Check out code
+
+    - name: Setup python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8.x'
+
+    - name: Install dependencies
+      run: |
+        python -m venv venv
+        source venv/bin/activate
+        pip install black
+
+    - name: check-format
+      run: |
+        source venv/bin/activate
+        python -m black . --check
