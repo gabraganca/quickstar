@@ -27,7 +27,7 @@ jobs:
     - name: Build Synspec Worker image
       run: docker build src/worker --file src/worker/worker.dockerfile --rm -t quickstar_worker
 
-    - names: Run tests
+    - : Run tests
       run: docker run quickstar_worker pytest -v
 
   test-api:
@@ -40,7 +40,7 @@ jobs:
     - name: Build API image
       run: docker build src/api --file src/api/api.dockerfile --rm -t quickstar_api
 
-    - names: Run tests
+    - name: Run tests
       run: docker run quickstar_api pytest -v
 
   check-format:
