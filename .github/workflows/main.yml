@@ -27,7 +27,7 @@ jobs:
     - name: Build Synspec Worker image
       run: docker build src/worker --file src/worker/worker.dockerfile --rm -t quickstar_worker
 
-    - : Run tests
+    - name: Run tests
       run: docker run quickstar_worker pytest -v
 
   test-api:
