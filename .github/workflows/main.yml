@@ -55,13 +55,7 @@ jobs:
       with:
         python-version: '3.8.x'
 
-    - name: Install dependencies
-      run: |
-        python -m venv venv
-        source venv/bin/activate
-        pip install black
-
     - name: check-format
       run: |
-        source venv/bin/activate
+        pip --no-cache-dir --disable-pip-version-check install black
         python -m black . --check
