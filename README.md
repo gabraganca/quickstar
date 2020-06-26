@@ -1,5 +1,7 @@
 # QuickStar
 
+[![codecov](https://codecov.io/gh/gabraganca/quickstar/branch/master/graph/badge.svg)](https://codecov.io/gh/gabraganca/quickstar)
+
 QuickStar provides the [Synspec][synspec-website] software built by Dr. Ivan Hubeny and Dr. Thierry Lanz over an API which you can consume using your tool of choice. It is also possible to synthesize multiple spectra simultaneously.
 
 [synspec-website]: http://tlusty.oca.eu/Synspec49/synspec.html
