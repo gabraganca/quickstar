@@ -59,3 +59,39 @@ jobs:
       run: |
         pip --no-cache-dir --disable-pip-version-check install black
         python -m black . --check
+
+  coverage:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      name: Check out code
+
+    - name: Build images
+      run: |
+        docker build src/api --file src/api/api.dockerfile --rm -t quickstar_api
+        docker build src/worker --file src/worker/worker.dockerfile --rm -t quickstar_worker
+
+    - name: Get coverage of API
+      run: |
+        docker run -d --rm --name quickstar_api quickstar_api sleep 60
+        docker exec quickstar_api pytest --cov=. . --cov-report=xml --cov-config=.coveragerc
+        docker cp quickstar_api:/home/api/coverage.xml .
+
+    - uses: codecov/codecov-action@v1
+      with:
+        file: ./coverage.xml
+        name: API
+        fail_ci_if_error: true
+
+    - name: Get coverage of Worker
+      run: |
+        docker run -d --rm --name quickstar_worker quickstar_worker sleep 60
+        docker exec quickstar_worker pytest --cov=. . --cov-report=xml --cov-config=.coveragerc
+        docker cp quickstar_worker:/home/worker/coverage.xml .
+
+    - uses: codecov/codecov-action@v1
+      with:
+        file: ./coverage.xml
+        name: Worker
+        fail_ci_if_error: true
