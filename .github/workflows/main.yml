@@ -89,9 +89,23 @@ jobs:
         docker run -d --rm --name quickstar_worker quickstar_worker sleep 60
         docker exec quickstar_worker pytest --cov=. . --cov-report=xml --cov-config=.coveragerc
         docker cp quickstar_worker:/home/worker/coverage.xml .
+        docker cp quickstar_worker:/home/worker/gcov_coverage/synspec49.gcda .
+        docker cp quickstar_worker:/home/worker/gcov_coverage/rotin3.gcda .
 
     - uses: codecov/codecov-action@v1
       with:
         file: ./coverage.xml
         name: Worker
+        fail_ci_if_error: true
+
+    - uses: codecov/codecov-action@v1
+      with:
+        file: ./synspec49.gcda
+        name: Synspec
+        fail_ci_if_error: true
+
+    - uses: codecov/codecov-action@v1
+      with:
+        file: ./rotin3.gcda
+        name: Rotin
         fail_ci_if_error: true
