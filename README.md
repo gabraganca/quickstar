@@ -102,12 +102,6 @@ The API and Synspec are containerized so all you will need is:
 
 ## Deploying the services
 
-First, we need to get the atomic and atmospheric models:
-
-```bash
-./bootstrap.sh
-```
-
 The API is configured to run with Docker Compose. In your terminal, run.
 
 ```bash
