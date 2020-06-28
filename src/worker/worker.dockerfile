@@ -10,14 +10,16 @@ RUN apt-get update \
 
 COPY app/synspec .
 
-RUN gfortran -g -fno-automatic -static -o synspec49 synspec49.f \
-    && gfortran -g -fno-automatic -static -o rotin3 rotin3.f
+RUN gfortran -g --coverage -fno-automatic -static -o synspec49 synspec49.f \
+    && gfortran -g --coverage -fno-automatic -static -o rotin3 rotin3.f
 
 
 FROM python:3.8-slim-buster
 LABEL maintainer="ga.braganca@gmail.com"
 
 ENV SHELL /bin/bash
+ENV GCOV_PREFIX /home/worker/gcov_coverage
+ENV GCOV_PREFIX_STRIP 1
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends gnudatalanguage \
