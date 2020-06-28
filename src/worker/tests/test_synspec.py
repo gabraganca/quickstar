@@ -45,3 +45,13 @@ def test_synspecwrapper_calculate_spectrum(mocker):
     syn.calculate_spectrum()
 
     subprocess.call.assert_called_once()
+
+
+def test_synspec():
+    wstart, wend = 4000, 5000
+    syn = wrapper.SynspecWrapper(teff=20000, logg=4, wstart=wstart, wend=wend)
+
+    syn.calculate_spectrum()
+
+    assert syn.spectrum[0]["wavelength"] == pytest.approx(wstart)  # nosec
+    assert syn.spectrum[-1]["wavelength"] == pytest.approx(wend)  # nosec
