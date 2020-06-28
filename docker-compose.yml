@@ -26,9 +26,6 @@ services:
       dockerfile: worker.dockerfile
     environment: *common-variables
     entrypoint: ["celery", "worker", "-A", "app", "-Q", "synspec-queue", "-c", "1", "-l", "info"]
-    volumes:
-      - ./atdata:/home/worker/app/atdata
-      - ./bstar2006:/home/worker/app/bstar2006
 
   rabbitmq:
     image: "bitnami/rabbitmq:3.8"
