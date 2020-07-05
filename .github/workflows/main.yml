@@ -78,7 +78,7 @@ jobs:
         docker exec quickstar_api pytest --cov=. . --cov-report=xml --cov-config=.coveragerc
         docker cp quickstar_api:/home/api/coverage.xml .
 
-    - uses: codecov/codecov-action@v1
+    - uses: codecov/codecov-action@v1.0.10
       with:
         file: ./coverage.xml
         name: API
@@ -90,7 +90,7 @@ jobs:
         docker exec quickstar_worker pytest --cov=. . --cov-report=xml --cov-config=.coveragerc
         docker cp quickstar_worker:/home/worker/coverage.xml .
 
-    - uses: codecov/codecov-action@v1
+    - uses: codecov/codecov-action@v1.0.10
       with:
         file: ./coverage.xml
         name: Worker
