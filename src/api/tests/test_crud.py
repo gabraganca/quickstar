@@ -54,7 +54,7 @@ def test_get_result_ready(celery_app, mocker):
 
 
 def test_get_result_not_ready(celery_app, mocker):
-    test_status = "PENDING"
+    test_status = "SENT"
 
     test_response_payload = {
         "id": _TEST_UUID,
