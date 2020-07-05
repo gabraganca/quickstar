@@ -1,3 +1,4 @@
+from typing import Optional, Dict, Any
 from uuid import UUID
 from app.settings import celery_app
 
@@ -10,8 +11,16 @@ def create_spectrum(teff: float, logg: float, wstart: float, wend: float, **kwar
     return {"id": task.id}
 
 
-def get_task(task_id: UUID, page: int = 1, per_page: int = 20):
+def get_task(
+    task_id: UUID, page: int = 1, per_page: int = 20
+) -> Optional[Dict[str, Any]]:
+
     task_result = celery_app.AsyncResult(str(task_id))
+
+    if task_result.status == "PENDING":
+        # It is not a valid task
+        return None
+
     response = dict(id=task_id, status=task_result.status)
     if task_result.ready():
         response.update(

@@ -1,5 +1,5 @@
 from uuid import UUID
-from fastapi import FastAPI, Response, Request
+from fastapi import FastAPI, Response, Request, HTTPException, status
 
 from app import schemas
 from app import crud
@@ -12,11 +12,25 @@ async def create_spectrum(parameters: schemas.SynspecParameters):
     return crud.create_spectrum(**parameters.dict())
 
 
-@app.head("/synspec/{task_id}",)
+@app.head(
+    "/synspec/{task_id}",
+    responses={
+        status.HTTP_404_NOT_FOUND: {
+            "model": schemas.Detail,
+            "description": "Not found",
+        }
+    },
+)
 @app.get(
     "/synspec/{task_id}",
     response_model=schemas.TaskResult,
     response_model_exclude_unset=True,
+    responses={
+        status.HTTP_404_NOT_FOUND: {
+            "model": schemas.Detail,
+            "description": "Not found",
+        }
+    },
 )
 async def fetch_result(
     request: Request,
@@ -27,6 +41,11 @@ async def fetch_result(
 ):
     page = page if page > 0 else 1
     content = crud.get_task(task_id, page, per_page)
+    if content is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Synspec task not found."
+        )
+
     if "total_count" in content:
         total_count = content["total_count"]
         n_pages = (total_count // per_page) + (1 if (total_count % per_page) else 0)

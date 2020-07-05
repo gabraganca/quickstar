@@ -1,4 +1,4 @@
-from typing import List, Dict, Optional
+from typing import List, Dict, Optional, Union
 from datetime import datetime
 from uuid import UUID
 from pydantic import BaseModel, PositiveFloat, PositiveInt
@@ -51,3 +51,7 @@ class TaskResult(TaskBase):
 
 class Health(BaseModel):
     status: bool
+
+
+class Detail(BaseModel):
+    detail: str
