@@ -66,6 +66,19 @@ def test_synspec_get_route(client: TestClient, monkeypatch):
     assert response.json() == _TEST_TASK_RESULT  # nosec
 
 
+def test_sysnpec_get_route_inexistent_id(client: TestClient, monkeypatch):
+    test_response = {"detail": "Synspec task not found."}
+
+    def mock_crud_get_task(id, page=1, per_page=20):
+        return None
+
+    monkeypatch.setattr(crud, "get_task", mock_crud_get_task)
+
+    response = client.get(f"/synspec/{_TEST_UUID}")
+    assert response.status_code == 404  # nosec
+    assert response.json() == test_response  # nosec
+
+
 def test_pagination_links(client: TestClient, monkeypatch):
     monkeypatch.setattr(crud, "get_task", _mock_crud_get_task)
 

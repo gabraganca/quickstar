@@ -74,3 +74,19 @@ def test_get_result_not_ready(celery_app, mocker):
 
     result = crud.get_task(_TEST_UUID)
     assert result == test_response_payload  # nosec
+
+
+def test_get_result_inexistent_id(celery_app, mocker):
+    class AsyncResult:
+        status = "PENDING"
+
+        @staticmethod
+        def ready():
+            return False
+
+    mocker.patch(
+        "app.settings.celery_app.AsyncResult", return_value=AsyncResult,
+    )
+
+    result = crud.get_task(_TEST_UUID)
+    assert result is None  # nosec
