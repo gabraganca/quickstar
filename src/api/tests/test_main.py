@@ -46,7 +46,7 @@ def test_synspec_post_route_missing_arg(client: TestClient, monkeypatch):
     test_response_payload = {
         "detail": [
             {
-                "loc": ["body", "parameters", "teff"],
+                "loc": ["body", "teff"],
                 "msg": "field required",
                 "type": "value_error.missing",
             }
