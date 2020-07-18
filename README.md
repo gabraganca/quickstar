@@ -4,13 +4,21 @@
 [![codecov](https://codecov.io/gh/gabraganca/quickstar/branch/master/graph/badge.svg)](https://codecov.io/gh/gabraganca/quickstar)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-QuickStar provides the [Synspec][synspec-website] software built by Dr. Ivan Hubeny and Dr. Thierry Lanz over an API which you can consume using your tool of choice. It is also possible to synthesize multiple spectra simultaneously.
+QuickStar provides the [Synspec][synspec-website] software built by Dr. Ivan Hubeny and Dr. Thierry Lanz as a web app, which can be use through the browser or as an API.
+
+Click in the image below to see a quick demo.
+
+[![Watch the video](https://img.youtube.com/vi/PvHixH5YV6I/maxresdefault.jpg)](https://youtu.be/PvHixH5YV6I)
+
 
 [synspec-website]: http://tlusty.oca.eu/Synspec49/synspec.html
 
-## Example
+## Example of using the API
 
-This is an example using Pythn but, since it is an API, it is langauge agnostic allowing you to use the tool of your choice (as long it makes web request available).
+This is an example of how one can consume the API using Python but, since it is an API, it is language agnostic allowing you to use the tool of your choice (as long it makes web request available).
+
+[![asciicast](https://asciinema.org/a/345533.svg)](https://asciinema.org/a/345533)
+
 
 The API runs asynchronously, so we need to send a POST request first with the stellar parameters to trigger the Synspec calculation. We will assume that QuickStar is running locally:
 
@@ -117,3 +125,6 @@ docker-compose up --scale worker=2
 This set up will allow to calculate two spectra in parallel.
 
 Depending of how you have installed Docker and Docker Compose, it is possible that you will need to run the docker commands above with `sudo`.
+
+
+After booting the services, the frontend can be accessed at [localhost](http://127.0.0.1).

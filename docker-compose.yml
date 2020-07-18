@@ -5,6 +5,19 @@ x-common-variables: &common-variables
   CELERY_BACKEND_URL: redis://:password123@redis:6379/0
 
 services:
+  frontend:
+    build:
+      context: ./src/frontend
+      dockerfile: frontend.dockerfile
+    depends_on:
+      - api
+    ports:
+      - "80:8501"
+    entrypoint: ["streamlit", "run", "app/main.py"]
+    environment:
+      - STREAMLIT_SERVER_HEADLESS=true
+      - BACKEND_URL=http://api
+
   api:
     build:
       context: ./src/api
