@@ -16,9 +16,12 @@ jobs:
     - name: Build Synspec Worker image
       run: docker build src/worker --file src/worker/worker.dockerfile --rm
 
+    - name: Build Frontend image
+      run: docker build src/frontend --file src/frontend/frontend.dockerfile --rm
 
   test-worker:
     runs-on: ubuntu-latest
+    needs: docker-build
 
     steps:
     - uses: actions/checkout@v2
@@ -32,6 +35,7 @@ jobs:
 
   test-api:
     runs-on: ubuntu-latest
+    needs: docker-build
 
     steps:
     - uses: actions/checkout@v2
@@ -45,6 +49,7 @@ jobs:
 
   test-frontend:
     runs-on: ubuntu-latest
+    needs: docker-build
 
     steps:
     - uses: actions/checkout@v2
@@ -75,6 +80,7 @@ jobs:
 
   coverage:
     runs-on: ubuntu-latest
+    needs: docker-build
 
     steps:
     - uses: actions/checkout@v2
