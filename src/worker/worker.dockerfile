@@ -17,7 +17,7 @@ RUN wget -c http://tlusty.oca.eu/Tlusty2002/database/atom_BS06.tar \
     && rm atom_BS06.tar
 
 
-FROM python:3.8-slim-buster as compiler
+FROM python:3.9.0-slim-buster as compiler
 
 WORKDIR /synspec/
 
@@ -33,7 +33,7 @@ RUN gfortran -g -fno-automatic -static -o synspec49 synspec49.f \
     && gfortran -g -fno-automatic -static -o rotin3 rotin3.f
 
 
-FROM python:3.8-slim-buster
+FROM python:3.9.0-slim-buster
 LABEL maintainer="ga.braganca@gmail.com"
 
 ENV SHELL /bin/bash
