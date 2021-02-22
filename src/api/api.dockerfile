@@ -1,4 +1,4 @@
-FROM python:3.8-alpine
+FROM python:3.9.2-alpine
 LABEL maintainer="ga.braganca@gmail.com"
 
 RUN apk add --no-cache --virtual .build-deps gcc libc-dev make \
