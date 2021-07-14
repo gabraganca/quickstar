@@ -4,4 +4,4 @@ redis~=3.5.3
 pytest~=6.0
 pytest-mock~=3.3.0
 pytest-cov~=2.10
-requests==2.24.0
+requests==2.26.0
